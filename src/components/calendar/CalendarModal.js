@@ -6,7 +6,7 @@ import DateTimePicker from 'react-datetime-picker';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/events';
+import { eventClearActiveEvent, eventStartAddNew, eventStartUpdate } from '../../actions/events';
 
 const customStyles = {
     content: {
@@ -25,7 +25,7 @@ const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const nowPlus1 = now.clone().add(1, 'hours');
 
 const initEvent = {
-    title: 'Evento',
+    title: '',
     notes: '',
     start: now.toDate(),
     end: nowPlus1.toDate()
@@ -99,17 +99,10 @@ export const CalendarModal = () => {
 
         if (activeEvent) {
             // Actualizando
-            dispatch( eventUpdated(formValues) );
+            dispatch( eventStartUpdate(formValues) );
         } else {
             // Creando
-            dispatch( eventAddNew({ 
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '1233',
-                    name: 'Fernando'
-                }
-            }) );
+            dispatch( eventStartAddNew(formValues) );
         }
 
         setTitleValid(true);
